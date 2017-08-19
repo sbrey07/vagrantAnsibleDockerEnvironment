@@ -1,0 +1,20 @@
+---
+- name: Create Docker Container
+  hosts: localhost
+  connection: local  
+  remote_user: root
+  tasks:
+    - name: Create Container
+      docker_container:
+        name: "my-nginx"
+        image: "nginx"
+        ports:
+          - "8080:80"
+        volumes:
+          - "./nginx.conf:/etc/nginx/nginx.conf:ro"
+        privileged: "true"
+    - name: check container status
+      command: docker ps
+      register: result
+    - debug: var=result.stdout
+    
